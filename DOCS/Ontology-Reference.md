@@ -210,3 +210,40 @@ hasSolarRadiation: Relates the geospace to solar radiation.
 
 - isPartOf: Relates a subclass to its superclass, for example, a satellite is part of the geospace.
 - isLocatedIn: Relates a subclass to its location within the geospace, for example, an asteroid may be located in the asteroid belt between Mars and Jupiter.
+
+# Universe
+## Classes
+- Universe: The overarching class representing the entirety of space and all matter and energy within it.
+- Galaxy: A gravitationally bound system of stars, gas, dust, and dark matter.
+- Star: A luminous ball of plasma held together by its own gravity.
+- Planet: A celestial body that orbits a star, has sufficient mass for its gravity to compress it into a spherical shape, and has cleared its orbit of other debris.
+- Moon: A natural satellite that orbits a planet.
+- Comet: A small celestial body that orbits the Sun and releases gas or dust as it approaches the Sun.
+- Asteroid: A small rocky or metallic object that travels through space.
+- Black hole: A region of spacetime where gravity is so strong that nothing, not even light, can escape.
+- Dark matter: Matter that does not emit, absorb, or reflect light, but can be inferred from its gravitational effects.
+- Dark energy: A form of energy that permeates all of space and is thought to be responsible for the accelerating expansion of the Universe.
+
+## Properties
+
+- hasGalaxy: Relates the Universe to galaxies.
+- hasStar: Relates the Universe to stars.
+- hasPlanet: Relates the Universe to planets.
+- hasMoon: Relates the Universe to moons.
+- hasComet: Relates the Universe to comets.
+- hasAsteroid: Relates the Universe to asteroids.
+- hasBlackHole: Relates the Universe to black holes.
+- hasDarkMatter: Relates the Universe to dark matter.
+- hasDarkEnergy: Relates the Universe to dark energy.
+
+
+## Subclasses
+- Solar System: The collection of planets, asteroids, comets, and other celestial bodies that orbit a star.
+- Exoplanet: A planet that orbits a star outside the Solar System.
+- Supernova: An astronomical event that occurs during the last stages of a star's life when it undergoes a catastrophic explosion.
+- Quasar: An extremely luminous active galactic nucleus powered by accretion of material onto a supermassive black hole at the center of a galaxy.
+- Nebula: A cloud of gas and dust in outer space, visible either as an indistinct bright patch or as a dark silhouette against other luminous matter.
+
+## Relationships
+- Relates a subclass to its superclass, for example, a planet is part of a solar system, which is part of the Universe.
+- isLocatedIn: Relates a subclass to its location within the Universe, for example, a galaxy may be located in a particular region or cluster of galaxies.
