@@ -1,0 +1,155 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:biosphere;1",
+    "@type": "Interface",
+    "displayName": "Biosphere",
+    "contents": [
+        {
+            "@type": "Interface",
+            "displayName": "Organism",
+            "contents": [
+                {
+                    "@type": "Interface",
+                    "displayName": "Plant",
+                    "contents": []
+                },
+                {
+                    "@type": "Interface",
+                    "displayName": "Animal",
+                    "contents": [
+                        {
+                            "@type": "Interface",
+                            "displayName": "Predator",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Prey",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Herbivore",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Carnivore",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Omnivore",
+                            "contents": []
+                        }
+                    ]
+                },
+                {
+                    "@type": "Interface",
+                    "displayName": "Microorganism",
+                    "contents": []
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Ecosystem",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Biome",
+            "contents": []
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Habitat",
+            "contents": []
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Population",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "PopulationGroup",
+            "contents": []
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "FoodWeb",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Producer",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Plant"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "photosynthesisRate",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Consumer",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Herbivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Herbivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "digestionEfficiency",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Carnivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Carnivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "huntingSuccessRate",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Omnivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Omnivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "digestionEfficiency",
+            "schema": "double"
+            },
+            {
+            "@type": "Telemetry",
+            "name": "huntingSuccessRate",
+            "schema": "double"
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            }
