@@ -1,0 +1,413 @@
+[{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:earth;4",
+    "@type": "Interface",
+    "displayName": "Earth",
+    "contents": [
+        {
+            "@type": "Component",
+            "displayName": "Atmosphere",
+            "name": "atmosphere",
+            "schema": "dtmi:myorganization:atmosphere;4"
+        },
+        {
+            "@type": "Component",
+            "displayName": "Hydrosphere",
+            "name": "hydrosphere",
+            "schema": "dtmi:myorganization:hydrosphere;4"
+        },
+        {
+            "@type": "Component",
+            "displayName": "Biosphere",
+            "name": "biosphere",
+            "schema": "dtmi:myorganization:biosphere;4"
+        }
+    ],
+    "extends": [
+        "dtmi:azure:core:geographic:Geospace;1"
+    ]
+},
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:biosphere;1",
+    "@type": "Interface",
+    "displayName": "Biosphere",
+    "contents": [
+        {
+            "@type": "Interface",
+            "displayName": "Organism",
+            "contents": [
+                {
+                    "@type": "Interface",
+                    "displayName": "Plant",
+                    "contents": []
+                },
+                {
+                    "@type": "Interface",
+                    "displayName": "Animal",
+                    "contents": [
+                        {
+                            "@type": "Interface",
+                            "displayName": "Predator",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Prey",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Herbivore",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Carnivore",
+                            "contents": []
+                        },
+                        {
+                            "@type": "Interface",
+                            "displayName": "Omnivore",
+                            "contents": []
+                        }
+                    ]
+                },
+                {
+                    "@type": "Interface",
+                    "displayName": "Microorganism",
+                    "contents": []
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Ecosystem",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Biome",
+            "contents": []
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Habitat",
+            "contents": []
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Population",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "PopulationGroup",
+            "contents": []
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "FoodWeb",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Producer",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Plant"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "photosynthesisRate",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Consumer",
+            "contents": [
+            {
+            "@type": "Interface",
+            "displayName": "Herbivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Herbivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "digestionEfficiency",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Carnivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Carnivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "huntingSuccessRate",
+            "schema": "double"
+            }
+            ]
+            },
+            {
+            "@type": "Interface",
+            "displayName": "Omnivore",
+            "extends": [
+            "dtmi:myorganization:biosphere;1;Organism;Animal;Omnivore"
+            ],
+            "contents": [
+            {
+            "@type": "Telemetry",
+            "name": "digestionEfficiency",
+            "schema": "double"
+            },
+            {
+            "@type": "Telemetry",
+            "name": "huntingSuccessRate",
+            "schema": "double"
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            }
+            ]
+            },
+            {
+                "@context": "dtmi:dtdl:context;2",
+                "@id": "dtmi:myorganization:hydrosphere;1",
+                "@type": "Interface",
+                "displayName": "Hydrosphere",
+                "contents": [
+                    {
+                        "@type": "Interface",
+                        "displayName": "Ocean",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Sea",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Lake",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "River",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Stream",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Glacier",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Water",
+                        "contents": []
+                    },
+                    {
+                        "@type": "Interface",
+                        "displayName": "Salinity",
+                        "contents": []
+                    }
+                ],
+                "extends": [
+                    "dtmi:azure:core:geography-1;1"
+                ],
+                "relationships": [
+                    {
+                        "name": "hasOcean",
+                        "target": "dtmi:myorganization:ocean;1",
+                        "multiplicity": "1..*"
+                    },
+                    {
+                        "name": "hasSea",
+                        "target": "dtmi:myorganization:sea;1",
+                        "multiplicity": "1..*"
+                    },
+                    {
+                        "name": "hasLake",
+                        "target": "dtmi:myorganization:lake;1",
+                        "multiplicity": "1..*"
+                    },
+                    {
+                        "name": "hasRiver",
+                        "target": "dtmi:myorganization:river;1",
+                        "multiplicity": "1..*"
+                    },
+                    {
+                        "name": "hasStream",
+                        "target": "dtmi:myorganization:stream;1",
+                        "multiplicity": "1..*"
+                    },
+                    {
+                        "name": "hasGlacier",
+                        "target": "dtmi:myorganization:glacier;1",
+                        "multiplicity": "1..*"
+                    }
+                ]
+            },       
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:atmosphere;1",
+    "@type": "Interface",
+    "displayName": "Atmosphere",
+    "contents": [
+        {
+            "@type": "Interface",
+            "displayName": "Troposphere",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": []
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Stratosphere",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": []
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Mesosphere",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": []
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Thermosphere",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": []
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Exosphere",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": []
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Air",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "pressure",
+                    "schema": "double"
+                },
+                {
+                    "@type": "Telemetry",
+                    "name": "temperature",
+                    "schema": "double"
+                },
+                {
+                    "@type": "Telemetry",
+                    "name": "humidity",
+                    "schema": "double"
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Oxygen",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "concentration",
+                    "schema": "double"
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Nitrogen",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "concentration",
+                    "schema": "double"
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "CarbonDioxide",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "concentration",
+                    "schema": "double"
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "Ozone",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "concentration",
+                    "schema": "double"
+                }
+            ]
+        },
+        {
+            "@type": "Interface",
+            "displayName": "WaterVapor",
+            "extends": [
+                "dtmi:azure:core:measurement-1;1"
+            ],
+            "contents": [
+                {
+                    "@type": "Telemetry",
+                    "name": "concentration",
+                    "schema": "double"
+                }
+            ]
+        }
+    ]
+}
+]
+
+
+

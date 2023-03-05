@@ -1,0 +1,63 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:geospace;1",
+    "@type": "Interface",
+    "displayName": "Geospace",
+    "contents": [
+        {
+            "@type": "Telemetry",
+            "name": "latitude",
+            "schema": "double"
+        },
+        {
+            "@type": "Telemetry",
+            "name": "longitude",
+            "schema": "double"
+        },
+        {
+            "@type": "Telemetry",
+            "name": "altitude",
+            "schema": "double"
+        },
+        {
+            "@type": "Telemetry",
+            "name": "temperature",
+            "schema": "double"
+        },
+        {
+            "@type": "Telemetry",
+            "name": "pressure",
+            "schema": "double"
+        },
+        {
+            "@type": "Command",
+            "name": "setCoordinates",
+            "request": {
+                "name": "coordinates",
+                "schema": {
+                    "type": "object",
+                    "required": [
+                        "latitude",
+                        "longitude",
+                        "altitude"
+                    ],
+                    "properties": {
+                        "latitude": {
+                            "type": "number",
+                            "minimum": -90,
+                            "maximum": 90
+                        },
+                        "longitude": {
+                            "type": "number",
+                            "minimum": -180,
+                            "maximum": 180
+                        },
+                        "altitude": {
+                            "type": "number"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
