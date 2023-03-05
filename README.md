@@ -1,8 +1,7 @@
-# EarthIOntology
+# EarthOntology
 ADT DTDL Models the earth
 
-
-Classes:
+Earth - Classes:
 
 Earth: The planet we live on.
 Atmosphere: The layer of gases that surrounds the Earth.
