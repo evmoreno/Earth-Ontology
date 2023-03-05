@@ -1,11 +1,18 @@
 # EarthOntology
-ADT DTDL Models for Earth Ecosystem.
 
-For use in Azure Digital Twins.
+### Sample DTDL models for Earth Ecosystem, exploring use in Azure Digital Twins.
 
-Earth
-Geospace
-Atmosphere
-Biosphere
-Hyrdosphere
-Lithosphere
+
+## 1. Earth
+## 2. Geospace
+## 3. Atmosphere
+## 4. Biosphere
+## 5. Hyrdosphere
+## 6. Lithosphere
+## 7. Universe
+
+
+
+  
+
+### Note * These are in development
