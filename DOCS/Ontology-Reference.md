@@ -181,3 +181,32 @@ Biodiversity: The variety of life forms in an ecosystem.
 - isPartOf: Relates a subclass to its superclass.
 - isLocatedIn: Relates a subclass to its location within the Earth.
 
+# Geospace
+
+## Classes
+- Geospace: The overarching class representing the space above the Earth's surface.
+- Satellite: An object in orbit around the Earth that is used for communication, navigation, or scientific research.
+- Asteroid: A small rocky object that orbits the Sun and can potentially collide with the Earth.
+- Meteoroid: A small rocky or metallic object that travels through space.
+- Comet: A small celestial body that orbits the Sun and releases gas or dust as it approaches the Sun.
+- Solar radiation: The electromagnetic radiation emitted by the Sun, including visible light, ultraviolet radiation, and X-rays.
+
+## Properties
+
+- hasSatellite: Relates the geospace to artificial satellites.
+- hasAsteroid: Relates the geospace to asteroids.
+- hasMeteoroid: Relates the geospace to meteoroids.
+- hasComet: Relates the geospace to comets.
+hasSolarRadiation: Relates the geospace to solar radiation.
+
+
+## Subclasses
+- Orbit: The path that an object takes as it revolves around another object, such as the Earth or the Sun.
+- Solar System: The collection of planets, asteroids, comets, and other celestial bodies that orbit the Sun.
+- Near-Earth Object (NEO): An asteroid or comet with an orbit that brings it close to the Earth's orbit.
+
+
+## Relationships
+
+- isPartOf: Relates a subclass to its superclass, for example, a satellite is part of the geospace.
+- isLocatedIn: Relates a subclass to its location within the geospace, for example, an asteroid may be located in the asteroid belt between Mars and Jupiter.
