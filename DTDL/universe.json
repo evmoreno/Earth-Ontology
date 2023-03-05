@@ -1,0 +1,62 @@
+{
+    "@context": "dtmi:dtdl:context;2",
+    "@id": "dtmi:myorganization:universe;1",
+    "@type": "Interface",
+    "displayName": "Universe",
+    "contents": [
+        {
+            "@type": "Relationship",
+            "name": "hasGalaxy",
+            "target": "dtmi:myorganization:galaxy;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasStar",
+            "target": "dtmi:myorganization:star;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasPlanet",
+            "target": "dtmi:myorganization:planet;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasMoon",
+            "target": "dtmi:myorganization:moon;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasComet",
+            "target": "dtmi:myorganization:comet;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasAsteroid",
+            "target": "dtmi:myorganization:asteroid;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasBlackHole",
+            "target": "dtmi:myorganization:blackhole;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasDarkMatter",
+            "target": "dtmi:myorganization:darkmatter;1",
+            "multiplicity": "many"
+        },
+        {
+            "@type": "Relationship",
+            "name": "hasDarkEnergy",
+            "target": "dtmi:myorganization:darkenergy;1",
+            "multiplicity": "many"
+        }
+    ]
+}
