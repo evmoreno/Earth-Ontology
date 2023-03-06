@@ -1,6 +1,6 @@
 # EarthOntology
 
-### Sample DTDL models for Earth Ecosystem, exploring use in Azure Digital Twins.
+Sample DTDL models for Earth Ecosystem, exploring use in Azure Digital Twins.
 
 
 ## 1. Earth
@@ -15,4 +15,4 @@
 
   
 
-### Note * These are in development
+  Note * These are in development
