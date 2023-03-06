@@ -3,23 +3,24 @@
     "@id": "dtmi:myorganization:earth;4",
     "@type": "Interface",
     "displayName": "Earth",
+    "name":"Earth",
     "contents": [
         {
             "@type": "Component",
             "displayName": "Atmosphere",
-            "name": "atmosphere",
+            "name": "Atmosphere",
             "schema": "dtmi:myorganization:atmosphere;4"
         },
         {
             "@type": "Component",
             "displayName": "Hydrosphere",
-            "name": "hydrosphere",
+            "name": "Hydrosphere",
             "schema": "dtmi:myorganization:hydrosphere;4"
         },
         {
             "@type": "Component",
             "displayName": "Biosphere",
-            "name": "biosphere",
+            "name": "Biosphere",
             "schema": "dtmi:myorganization:biosphere;4"
         }
     ],
@@ -32,43 +33,52 @@
     "@id": "dtmi:myorganization:biosphere;1",
     "@type": "Interface",
     "displayName": "Biosphere",
+    "name":"Biosphere",
     "contents": [
         {
             "@type": "Interface",
             "displayName": "Organism",
+            "name":"Organism",
             "contents": [
                 {
                     "@type": "Interface",
                     "displayName": "Plant",
+                    "name":"Plant",
                     "contents": []
                 },
                 {
                     "@type": "Interface",
                     "displayName": "Animal",
+                    "name":"Animal",
                     "contents": [
                         {
                             "@type": "Interface",
                             "displayName": "Predator",
+                            "name":"Predator",
                             "contents": []
                         },
                         {
                             "@type": "Interface",
                             "displayName": "Prey",
+                            "name":"Prey",
                             "contents": []
                         },
                         {
                             "@type": "Interface",
                             "displayName": "Herbivore",
+                            "name":"Herbivore",
                             "contents": []
                         },
                         {
                             "@type": "Interface",
                             "displayName": "Carnivore",
+                            "name":"Carnivore",
                             "contents": []
                         },
                         {
                             "@type": "Interface",
                             "displayName": "Omnivore",
+                            "name":"Omnivore",
                             "contents": []
                         }
                     ]
@@ -76,6 +86,7 @@
                 {
                     "@type": "Interface",
                     "displayName": "Microorganism",
+                    "name":"Microorganism",
                     "contents": []
                 }
             ]
@@ -83,24 +94,29 @@
         {
             "@type": "Interface",
             "displayName": "Ecosystem",
+            "name":"Ecosystem",
             "contents": [
             {
             "@type": "Interface",
             "displayName": "Biome",
+            "name":"Biome",
             "contents": []
             },
             {
             "@type": "Interface",
             "displayName": "Habitat",
+            "name":"Habitat",
             "contents": []
             },
             {
             "@type": "Interface",
             "displayName": "Population",
+            "name":"Population",
             "contents": [
             {
             "@type": "Interface",
             "displayName": "PopulationGroup",
+            "name":"PopulationGroup",
             "contents": []
             }
             ]
@@ -108,10 +124,12 @@
             {
             "@type": "Interface",
             "displayName": "FoodWeb",
+            "name":"FoodWeb",
             "contents": [
             {
             "@type": "Interface",
             "displayName": "Producer",
+            "name":"Producer",
             "extends": [
             "dtmi:myorganization:biosphere;1;Organism;Plant"
             ],
@@ -126,10 +144,12 @@
             {
             "@type": "Interface",
             "displayName": "Consumer",
+            "name":"Consumer",
             "contents": [
             {
             "@type": "Interface",
             "displayName": "Herbivore",
+            "name":"Herbivore",
             "extends": [
             "dtmi:myorganization:biosphere;1;Organism;Animal;Herbivore"
             ],
@@ -144,6 +164,7 @@
             {
             "@type": "Interface",
             "displayName": "Carnivore",
+            "name":"Carnivore",
             "extends": [
             "dtmi:myorganization:biosphere;1;Organism;Animal;Carnivore"
             ],
@@ -158,6 +179,7 @@
             {
             "@type": "Interface",
             "displayName": "Omnivore",
+            "name":"Omnivore",
             "extends": [
             "dtmi:myorganization:biosphere;1;Organism;Animal;Omnivore"
             ],
@@ -187,45 +209,54 @@
                 "@id": "dtmi:myorganization:hydrosphere;1",
                 "@type": "Interface",
                 "displayName": "Hydrosphere",
+                "name":"Hydrosphere",
                 "contents": [
                     {
                         "@type": "Interface",
                         "displayName": "Ocean",
+                        "name":"Ocean",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Sea",
+                        "name":"Sea",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Lake",
+                        "name":"Lake",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "River",
+                        "name":"River",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Stream",
+                        "name":"Stream",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Glacier",
+                        "name":"Glacier",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Water",
+                        "name":"Water",
                         "contents": []
                     },
                     {
                         "@type": "Interface",
                         "displayName": "Salinity",
+                        "name":"Salinity",
                         "contents": []
                     }
                 ],
@@ -270,10 +301,12 @@
     "@id": "dtmi:myorganization:atmosphere;1",
     "@type": "Interface",
     "displayName": "Atmosphere",
+    "name":"Atmosphere",
     "contents": [
         {
             "@type": "Interface",
             "displayName": "Troposphere",
+            "name":"Troposphere",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -282,6 +315,7 @@
         {
             "@type": "Interface",
             "displayName": "Stratosphere",
+            "name":"Stratosphere",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -290,6 +324,7 @@
         {
             "@type": "Interface",
             "displayName": "Mesosphere",
+            "name":"Mesosphere",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -298,6 +333,7 @@
         {
             "@type": "Interface",
             "displayName": "Thermosphere",
+            "name":"Thermosphere",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -306,6 +342,7 @@
         {
             "@type": "Interface",
             "displayName": "Exosphere",
+            "name":"Exosphere",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -314,6 +351,7 @@
         {
             "@type": "Interface",
             "displayName": "Air",
+            "name":"Air",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -338,6 +376,7 @@
         {
             "@type": "Interface",
             "displayName": "Oxygen",
+            "name":"Oxygen",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -352,6 +391,7 @@
         {
             "@type": "Interface",
             "displayName": "Nitrogen",
+            "name":"Nitrogen",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -366,6 +406,7 @@
         {
             "@type": "Interface",
             "displayName": "CarbonDioxide",
+            "name":"CarbonDioxide",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -380,6 +421,7 @@
         {
             "@type": "Interface",
             "displayName": "Ozone",
+            "name":"Ozone",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
@@ -394,6 +436,7 @@
         {
             "@type": "Interface",
             "displayName": "WaterVapor",
+            "name":"WaterVapor",
             "extends": [
                 "dtmi:azure:core:measurement-1;1"
             ],
