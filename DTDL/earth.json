@@ -8,19 +8,16 @@
         {
             "@type": "Component",
             "displayName": "Atmosphere",
-            "name": "Atmosphere",
             "schema": "dtmi:myorganization:atmosphere;4"
         },
         {
             "@type": "Component",
             "displayName": "Hydrosphere",
-            "name": "Hydrosphere",
             "schema": "dtmi:myorganization:hydrosphere;4"
         },
         {
             "@type": "Component",
             "displayName": "Biosphere",
-            "name": "Biosphere",
             "schema": "dtmi:myorganization:biosphere;4"
         }
     ],
