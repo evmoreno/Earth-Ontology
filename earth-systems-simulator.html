@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth Systems Simulator</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f4f0;
+    --bg3: #eeedea;
+    --text: #1a1a18;
+    --text2: #5a5a56;
+    --text3: #9a9a94;
+    --border: rgba(0,0,0,0.1);
+    --border2: rgba(0,0,0,0.18);
+    --blue: #185FA5;
+    --green: #3B6D11;
+    --teal: #085041;
+    --coral: #993C1D;
+    --ok-bg: #eaf3de; --ok-text: #27500A;
+    --warn-bg: #faeeda; --warn-text: #633806;
+    --danger-bg: #fcebeb; --danger-text: #791F1F;
+    --good-text: #1D9E75;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c;
+      --bg2: #2a2a28;
+      --bg3: #323230;
+      --text: #e8e6e0;
+      --text2: #a8a6a0;
+      --text3: #686660;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.18);
+      --ok-bg: #173404; --ok-text: #C0DD97;
+      --warn-bg: #412402; --warn-text: #FAC775;
+      --danger-bg: #501313; --danger-text: #F7C1C1;
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 900px; margin: 0 auto; }
+
+  header { margin-bottom: 2rem; }
+  header h1 { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+  header p { font-size: 14px; color: var(--text2); }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin: 0 0 12px;
+  }
+
+  .panel {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .controls-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 3rem;
+  }
+
+  @media (max-width: 600px) {
+    .controls-grid { grid-template-columns: 1fr; }
+    .spheres { grid-template-columns: 1fr !important; }
+  }
+
+  .sphere-group { margin-bottom: 1rem; }
+  .sphere-group-label {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .param-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .param-row label {
+    font-size: 13px;
+    color: var(--text2);
+    width: 190px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .param-row input[type=range] {
+    flex: 1;
+    min-width: 0;
+    accent-color: var(--blue);
+    cursor: pointer;
+  }
+  .param-row .val {
+    font-size: 13px;
+    font-weight: 500;
+    width: 64px;
+    text-align: right;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .spheres {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 1.25rem;
+  }
+
+  .sphere-card {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+  }
+
+  .sphere-card h3 {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .metric {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .metric-label { font-size: 12px; color: var(--text2); }
+  .metric-val {
+    font-size: 13px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, 'SF Mono', monospace;
+  }
+
+  .bar-wrap {
+    height: 4px;
+    background: var(--bg3);
+    border-radius: 2px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .bar {
+    height: 4px;
+    border-radius: 2px;
+    transition: width .35s ease, background .35s ease;
+  }
+
+  .status-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 6px;
+  }
+  .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .badge-ok     { background: var(--ok-bg);     color: var(--ok-text); }
+  .badge-warn   { background: var(--warn-bg);   color: var(--warn-text); }
+  .badge-danger { background: var(--danger-bg); color: var(--danger-text); }
+
+  .events-panel {
+    background: var(--bg2);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .event-item {
+    font-size: 13px;
+    color: var(--text2);
+    padding: 6px 0;
+    border-bottom: 0.5px solid var(--border);
+    line-height: 1.5;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .event-item:last-child { border-bottom: none; }
+  .event-item::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-top: 5px;
+    flex-shrink: 0;
+    background: var(--border2);
+  }
+  .event-item.warn  { color: var(--warn-text); }
+  .event-item.warn::before  { background: #EF9F27; }
+  .event-item.danger { color: var(--danger-text); }
+  .event-item.danger::before { background: #E24B4A; }
+  .event-item.good  { color: var(--good-text); }
+  .event-item.good::before  { background: #1D9E75; }
+
+  .divider {
+    height: 0.5px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  button {
+    font-size: 13px;
+    padding: 7px 18px;
+    border-radius: var(--radius-sm);
+    border: 0.5px solid var(--border2);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+  button:hover { background: var(--bg3); }
+  button:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+  }
+  .btn-primary:hover { background: #185FA5dd; }
+
+  footer {
+    margin-top: 3rem;
+    font-size: 12px;
+    color: var(--text3);
+    border-top: 0.5px solid var(--border);
+    padding-top: 1rem;
+  }
+  footer a { color: var(--text3); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Earth Systems Simulator</h1>
+    <p>Adjust parameters to explore cross-sphere feedback effects. Based on the <a href="https://github.com/evmoreno/Earth-Ontology" target="_blank">Earth Ontology DTDL model</a>.</p>
+  </header>
+
+  <div class="panel">
+    <p class="section-label">Parameters</p>
+    <div class="controls-grid">
+      <div>
+        <div class="sphere-group">
+          <p class="sphere-group-label" style="color:#185FA5">Atmosphere</p>
+          <div class="param-row">
+            <label>CO₂ concentration (ppm)</label>
+            <input type="range" id="co2" min="280" max="1200" step="1" value="420">
+            <span class="val" id="co2-v">420</span>
+          </div>
+          <div class="param-row">
+            <label>Ozone layer (Dobson Units)</label>
+            <input type="range" id="ozone" min="100" max="350" step="1" value="300">
+            <span class="val" id="ozone-v">300</span>
+          </div>
+        </div>
+        <div class="sphere-group">
+          <p class="sphere-group-label" style="color:#3B6D11">Lithosphere</p>
+          <div class="param-row">
+            <label>Tectonic activity (0–10)</label>
+            <input type="range" id="tectonic" min="0" max="10" step="0.1" value="4">
+            <span class="val" id="tectonic-v">4.0</span>
+          </div>
+          <div class="param-row">
+            <label>Volcanic activity (0–10)</label>
+            <input type="range" id="volcanic" min="0" max="10" step="0.1" value="2">
+            <span class="val" id="volcanic-v">2.0</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sphere-group">
+          <p class="sphere-group-label" style="color:#085041">Hydrosphere</p>
+          <div class="param-row">
+            <label>Sea level change (mm)</label>
+            <input type="range" id="sealevel" min="-200" max="1000" step="1" value="0">
+            <span class="val" id="sealevel-v">0</span>
+          </div>
+          <div class="param-row">
+            <label>Ocean temperature (°C)</label>
+            <input type="range" id="oceantemp" min="-2" max="35" step="0.1" value="17">
+            <span class="val" id="oceantemp-v">17.0</span>
+          </div>
+        </div>
+        <div class="sphere-group">
+          <p class="sphere-group-label" style="color:#993C1D">Biosphere</p>
+          <div class="param-row">
+            <label>Forest cover (%)</label>
+            <input type="range" id="forest" min="0" max="100" step="1" value="31">
+            <span class="val" id="forest-v">31%</span>
+          </div>
+          <div class="param-row">
+            <label>Biodiversity index (0–100)</label>
+            <input type="range" id="biodiv" min="0" max="100" step="1" value="72">
+            <span class="val" id="biodiv-v">72</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:.5rem">
+      <button onclick="resetAll()">Reset to baseline</button>
+      <button onclick="loadScenario('hothouse')">Scenario: hothouse Earth</button>
+      <button onclick="loadScenario('volcanic')">Scenario: super-eruption</button>
+      <button onclick="loadScenario('restored')">Scenario: restored Earth</button>
+    </div>
+  </div>
+
+  <p class="section-label">Derived state</p>
+
+  <div class="spheres">
+    <div class="sphere-card">
+      <h3 style="color:#185FA5">Atmosphere</h3>
+      <div class="metric"><span class="metric-label">Global mean temperature</span><span class="metric-val" id="gmt">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-gmt"></div></div>
+      <div class="metric"><span class="metric-label">Greenhouse effect</span><span class="metric-val" id="ghe">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-ghe"></div></div>
+      <div class="metric"><span class="metric-label">UV radiation level</span><span class="metric-val" id="uv">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-uv"></div></div>
+      <div class="status-row" id="status-atm"></div>
+    </div>
+
+    <div class="sphere-card">
+      <h3 style="color:#3B6D11">Lithosphere</h3>
+      <div class="metric"><span class="metric-label">Earthquake risk</span><span class="metric-val" id="eq-risk">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-eq"></div></div>
+      <div class="metric"><span class="metric-label">Atmospheric SO₂ input</span><span class="metric-val" id="so2">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-so2"></div></div>
+      <div class="metric"><span class="metric-label">Soil mineral turnover</span><span class="metric-val" id="mineral">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-mineral"></div></div>
+      <div class="status-row" id="status-lith"></div>
+    </div>
+
+    <div class="sphere-card">
+      <h3 style="color:#085041">Hydrosphere</h3>
+      <div class="metric"><span class="metric-label">Glacier mass balance</span><span class="metric-val" id="glacier">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-glacier"></div></div>
+      <div class="metric"><span class="metric-label">Ocean acidification (pH)</span><span class="metric-val" id="ph">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-ph"></div></div>
+      <div class="metric"><span class="metric-label">Coral reef health</span><span class="metric-val" id="coral">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-coral"></div></div>
+      <div class="status-row" id="status-hydro"></div>
+    </div>
+
+    <div class="sphere-card">
+      <h3 style="color:#993C1D">Biosphere</h3>
+      <div class="metric"><span class="metric-label">Net primary productivity</span><span class="metric-val" id="npp">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-npp"></div></div>
+      <div class="metric"><span class="metric-label">Species extinction risk</span><span class="metric-val" id="extinct">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-extinct"></div></div>
+      <div class="metric"><span class="metric-label">Carbon sequestration</span><span class="metric-val" id="carb-seq">—</span></div>
+      <div class="bar-wrap"><div class="bar" id="bar-seq"></div></div>
+      <div class="status-row" id="status-bio"></div>
+    </div>
+  </div>
+
+  <p class="section-label">System events</p>
+  <div class="events-panel">
+    <div id="events-list"></div>
+  </div>
+
+  <footer>
+    Earth Systems Simulator · Based on <a href="https://github.com/evmoreno/Earth-Ontology" target="_blank">evmoreno/Earth-Ontology</a> DTDL v3 models ·
+    Formulas are simplified feedback models for educational use, not calibrated climate simulations.
+  </footer>
+
+</div>
+
+<script>
+const BASE = {co2:420,ozone:300,tectonic:4,volcanic:2,sealevel:0,oceantemp:17,forest:31,biodiv:72};
+
+const SCENARIOS = {
+  hothouse:  {co2:900, ozone:260, tectonic:4, volcanic:3, sealevel:500, oceantemp:29, forest:12, biodiv:28},
+  volcanic:  {co2:480, ozone:230, tectonic:7, volcanic:9, sealevel:0,   oceantemp:15, forest:25, biodiv:55},
+  restored:  {co2:310, ozone:330, tectonic:3, volcanic:1, sealevel:-20, oceantemp:15, forest:62, biodiv:91}
+};
+
+function g(id){ return document.getElementById(id); }
+function clamp(v,lo,hi){ return Math.min(hi, Math.max(lo, v)); }
+function pct(v,lo,hi){ return Math.round(clamp((v-lo)/(hi-lo)*100, 0, 100)); }
+
+function barColor(p, invert){
+  if(invert){ return p>70?'#E24B4A': p>40?'#EF9F27':'#1D9E75'; }
+  return p<30?'#E24B4A': p<60?'#EF9F27':'#1D9E75';
+}
+
+function setBar(id, p, invert){
+  const b = g('bar-'+id);
+  b.style.width = p+'%';
+  b.style.background = barColor(p, invert);
+}
+
+function badge(text, type){ return `<span class="badge badge-${type}">${text}</span>`; }
+
+function applyValues(vals){
+  Object.entries(vals).forEach(([k,v])=>{
+    g(k).value = v;
+    updateLabel(k, v);
+  });
+  compute();
+}
+
+function updateLabel(id, v){
+  const fmts = {
+    forest:    v => v+'%',
+    oceantemp: v => (+v).toFixed(1)+'°C',
+    tectonic:  v => (+v).toFixed(1),
+    volcanic:  v => (+v).toFixed(1),
+  };
+  g(id+'-v').textContent = fmts[id] ? fmts[id](v) : v;
+}
+
+function resetAll(){ applyValues(BASE); }
+function loadScenario(name){ applyValues(SCENARIOS[name]); }
+
+function compute(){
+  const co2      = +g('co2').value;
+  const ozone    = +g('ozone').value;
+  const tectonic = +g('tectonic').value;
+  const volcanic = +g('volcanic').value;
+  const sealevel = +g('sealevel').value;
+  const oceantemp= +g('oceantemp').value;
+  const forest   = +g('forest').value;
+  const biodiv   = +g('biodiv').value;
+
+  const co2F = (co2-280)/920;
+
+  // Atmosphere
+  const gmt_val = +(13.8 + co2F*4.2 + (volcanic*0.05) - (forest*0.03) + (oceantemp-17)*0.1).toFixed(1);
+  const ghe_p   = pct(co2, 280, 1200);
+  const uv_p    = pct(350-ozone, 0, 250);
+
+  // Lithosphere
+  const eq_p      = pct(tectonic, 0, 10);
+  const so2_p     = pct(volcanic, 0, 10);
+  const mineral_p = pct(tectonic+volcanic, 0, 14);
+
+  // Hydrosphere
+  const glacier_p  = clamp(pct(35-oceantemp, -20, 40), 0, 100);
+  const ph_val     = +(8.2 - co2F*0.4).toFixed(2);
+  const ph_p       = pct(ph_val, 7.6, 8.2);
+  const coral_p    = clamp(Math.round(100-(co2F*60)-(Math.max(0,oceantemp-20)*4)-(Math.max(0,sealevel-100)*0.05)), 0, 100);
+
+  // Biosphere
+  const npp_p     = clamp(Math.round(forest*0.7 + biodiv*0.3 - Math.max(0,co2-800)*0.02 - Math.max(0,oceantemp-28)*2), 0, 100);
+  const extinct_p = clamp(Math.round((1-biodiv/100)*60 + co2F*25 + Math.max(0,sealevel-200)*0.05), 0, 100);
+  const seq_p     = clamp(Math.round(forest*0.8 + biodiv*0.15 - co2F*20), 0, 100);
+
+  // Render atmosphere
+  g('gmt').textContent = gmt_val+'°C';
+  setBar('gmt', pct(gmt_val,-10,50), true);
+  g('ghe').textContent = ghe_p+'%';
+  setBar('ghe', ghe_p, true);
+  g('uv').textContent = uv_p+'%';
+  setBar('uv', uv_p, true);
+
+  // Render lithosphere
+  g('eq-risk').textContent = eq_p+'%';
+  setBar('eq', eq_p, true);
+  g('so2').textContent = so2_p+'%';
+  setBar('so2', so2_p, true);
+  g('mineral').textContent = mineral_p+'%';
+  setBar('mineral', mineral_p, false);
+
+  // Render hydrosphere
+  g('glacier').textContent = glacier_p+'%';
+  setBar('glacier', glacier_p, false);
+  g('ph').textContent = 'pH '+ph_val;
+  setBar('ph', ph_p, false);
+  g('coral').textContent = coral_p+'%';
+  setBar('coral', coral_p, false);
+
+  // Render biosphere
+  g('npp').textContent = npp_p+'%';
+  setBar('npp', npp_p, false);
+  g('extinct').textContent = extinct_p+'%';
+  setBar('extinct', extinct_p, true);
+  g('carb-seq').textContent = seq_p+'%';
+  setBar('seq', seq_p, false);
+
+  // Status badges
+  const sAtm = [];
+  if(co2>550) sAtm.push(badge('High CO₂','danger'));
+  else if(co2>420) sAtm.push(badge('Elevated CO₂','warn'));
+  else sAtm.push(badge('CO₂ nominal','ok'));
+  if(ozone<220) sAtm.push(badge('Ozone hole','danger'));
+  else if(ozone<270) sAtm.push(badge('Ozone thin','warn'));
+  if(volcanic>7) sAtm.push(badge('Volcanic winter risk','danger'));
+  g('status-atm').innerHTML = sAtm.join('');
+
+  const sLith = [];
+  if(tectonic>8) sLith.push(badge('Major seismic risk','danger'));
+  else if(tectonic>6) sLith.push(badge('Elevated seismicity','warn'));
+  else sLith.push(badge('Seismic nominal','ok'));
+  if(volcanic>7) sLith.push(badge('Super-eruption','danger'));
+  else if(volcanic>5) sLith.push(badge('Active volcanism','warn'));
+  g('status-lith').innerHTML = sLith.join('');
+
+  const sHydro = [];
+  if(sealevel>500) sHydro.push(badge('Coastal inundation','danger'));
+  else if(sealevel>100) sHydro.push(badge('Sea level rising','warn'));
+  if(ph_val<7.8) sHydro.push(badge('Acidification critical','danger'));
+  else if(ph_val<8.0) sHydro.push(badge('Acidifying','warn'));
+  if(coral_p<20) sHydro.push(badge('Mass bleaching','danger'));
+  else if(coral_p<50) sHydro.push(badge('Reef stress','warn'));
+  if(sHydro.length===0) sHydro.push(badge('Hydrosphere stable','ok'));
+  g('status-hydro').innerHTML = sHydro.join('');
+
+  const sBio = [];
+  if(extinct_p>70) sBio.push(badge('Mass extinction','danger'));
+  else if(extinct_p>40) sBio.push(badge('Species loss elevated','warn'));
+  else sBio.push(badge('Biodiversity ok','ok'));
+  if(forest<15) sBio.push(badge('Deforestation critical','danger'));
+  else if(forest<25) sBio.push(badge('Forest loss','warn'));
+  g('status-bio').innerHTML = sBio.join('');
+
+  // Events
+  const events = [];
+  if(co2>800) events.push({text:`CO₂ at ${co2}ppm — runaway greenhouse warming probable. Comparable to Eocene (~50Ma ago).`, cls:'danger'});
+  else if(co2>550) events.push({text:`CO₂ above 550ppm — global temperature likely 2°C+ above pre-industrial baseline.`, cls:'warn'});
+  if(ozone<180) events.push({text:'Ozone layer collapsed — UV-B radiation lethal to surface life. No effective ozone shield.', cls:'danger'});
+  else if(ozone<230) events.push({text:'Large ozone hole — elevated UV-B causing skin cancer and reduced crop yields globally.', cls:'warn'});
+  if(volcanic>8) events.push({text:`Volcanic activity ${volcanic.toFixed(1)}/10 — super-eruption scale. SO₂ aerosols suppressing solar input, volcanic winter likely.`, cls:'danger'});
+  else if(volcanic>5) events.push({text:`Volcanic activity ${volcanic.toFixed(1)}/10 — sustained eruptions raising atmospheric SO₂ and temporarily suppressing warming.`, cls:'warn'});
+  if(sealevel>300) events.push({text:`Sea level +${sealevel}mm — major coastal cities (Miami, Shanghai, Amsterdam, Jakarta) facing inundation.`, cls:'danger'});
+  else if(sealevel>100) events.push({text:`Sea level +${sealevel}mm — low-lying coastal zones and small island nations increasingly affected.`, cls:'warn'});
+  if(ph_val<7.75) events.push({text:`Ocean pH ${ph_val} — aragonite undersaturation. Shellfish, pteropods, and coral skeletons dissolving.`, cls:'danger'});
+  if(oceantemp>28) events.push({text:`Ocean surface temperature ${oceantemp.toFixed(1)}°C — widespread mass coral bleaching and marine food web collapse.`, cls:'danger'});
+  else if(oceantemp>24) events.push({text:`Ocean temperature ${oceantemp.toFixed(1)}°C — thermal stress on tropical marine ecosystems and Great Barrier Reef.`, cls:'warn'});
+  if(forest<10) events.push({text:`Forest cover at ${forest}% — critical loss of carbon sequestration and disruption to regional rainfall cycles.`, cls:'danger'});
+  if(biodiv<30) events.push({text:`Biodiversity index ${biodiv} — ecosystem services collapsing. Pollination, soil formation, and pest control failing.`, cls:'danger'});
+  if(tectonic>9) events.push({text:`Tectonic activity ${tectonic.toFixed(1)}/10 — multiple major fault systems active. Widespread infrastructure damage.`, cls:'danger'});
+  if(glacier_p<10) events.push({text:'Glaciers near collapse — freshwater supply to major river systems (Ganges, Yellow, Colorado) severely threatened.', cls:'warn'});
+  if(volcanic>5 && co2<400) events.push({text:'Volcanic SO₂ aerosols partially masking greenhouse warming — surface temperature suppressed despite elevated CO₂.', cls:'warn'});
+  if(co2<320 && forest>50 && biodiv>80) events.push({text:'System in optimal balance — high biodiversity, stable climate, healthy oceans, strong carbon cycle.', cls:'good'});
+  if(events.length===0) events.push({text:'System operating within normal parameters — no critical thresholds breached.', cls:''});
+
+  g('events-list').innerHTML = events.map(e=>`<div class="event-item ${e.cls}">${e.text}</div>`).join('');
+}
+
+['co2','ozone','tectonic','volcanic','sealevel','oceantemp','forest','biodiv'].forEach(id=>{
+  g(id).addEventListener('input', ()=>{
+    updateLabel(id, g(id).value);
+    compute();
+  });
+});
+
+compute();
+</script>
+</body>
+</html>
