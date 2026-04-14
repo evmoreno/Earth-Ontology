@@ -1,155 +1,248 @@
-{
-    "@context": "dtmi:dtdl:context;2",
-    "@id": "dtmi:myorganization:biosphere;1",
+[
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Biosphere;1",
     "@type": "Interface",
     "displayName": "Biosphere",
+    "description": "The global sum of all ecosystems on Earth — the zone of life comprising all living organisms and their interactions with the Atmosphere, Lithosphere, and Hydrosphere.",
     "contents": [
-        {
-            "@type": "Interface",
-            "displayName": "Organism",
-            "contents": [
-                {
-                    "@type": "Interface",
-                    "displayName": "Plant",
-                    "contents": []
-                },
-                {
-                    "@type": "Interface",
-                    "displayName": "Animal",
-                    "contents": [
-                        {
-                            "@type": "Interface",
-                            "displayName": "Predator",
-                            "contents": []
-                        },
-                        {
-                            "@type": "Interface",
-                            "displayName": "Prey",
-                            "contents": []
-                        },
-                        {
-                            "@type": "Interface",
-                            "displayName": "Herbivore",
-                            "contents": []
-                        },
-                        {
-                            "@type": "Interface",
-                            "displayName": "Carnivore",
-                            "contents": []
-                        },
-                        {
-                            "@type": "Interface",
-                            "displayName": "Omnivore",
-                            "contents": []
-                        }
-                    ]
-                },
-                {
-                    "@type": "Interface",
-                    "displayName": "Microorganism",
-                    "contents": []
-                }
-            ]
+      {
+        "@type": "Property",
+        "name": "estimatedSpeciesCount",
+        "displayName": "Estimated Species Count",
+        "description": "Estimated total number of species on Earth (described and undescribed).",
+        "schema": "integer",
+        "writable": true
+      },
+      {
+        "@type": "Property",
+        "name": "totalBiomassPgC",
+        "displayName": "Total Biomass (PgC)",
+        "description": "Total estimated biomass of life on Earth in petagrams of carbon.",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Telemetry",
+        "name": "globalNPP_PgCperYear",
+        "displayName": "Global Net Primary Productivity (PgC/year)",
+        "description": "Annual global net primary productivity — the net carbon fixed by photosynthesis — in petagrams of carbon per year.",
+        "schema": "double"
+      },
+      {
+        "@type": "Relationship",
+        "name": "isPartOf",
+        "displayName": "Is Part Of",
+        "description": "The Biosphere is part of Earth.",
+        "target": "dtmi:earthontology:Earth;1",
+        "maxMultiplicity": 1
+      },
+      {
+        "@type": "Relationship",
+        "name": "interactsWith",
+        "displayName": "Interacts With",
+        "description": "The Biosphere interacts with the Atmosphere through gas exchange, the Hydrosphere through the water cycle, and the Lithosphere through soil formation and nutrient cycling.",
+        "target": "dtmi:earthontology:Atmosphere;1"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Forest;1",
+    "@type": "Interface",
+    "displayName": "Forest",
+    "description": "A large area dominated by trees and understory vegetation. Forests cover approximately 31% of Earth's land area and are critical carbon sinks and biodiversity hotspots.",
+    "extends": "dtmi:earthontology:Biosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Forest Name",
+        "description": "Name or identifier of this forest or forest region.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "forestType",
+        "displayName": "Forest Type",
+        "description": "The biome type of this forest.",
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "string",
+          "enumValues": [
+            { "name": "tropical",    "displayName": "Tropical Rainforest", "enumValue": "tropical" },
+            { "name": "temperate",   "displayName": "Temperate Forest",    "enumValue": "temperate" },
+            { "name": "boreal",      "displayName": "Boreal / Taiga",      "enumValue": "boreal" },
+            { "name": "mangrove",    "displayName": "Mangrove",            "enumValue": "mangrove" }
+          ]
         },
-        {
-            "@type": "Interface",
-            "displayName": "Ecosystem",
-            "contents": [
-            {
-            "@type": "Interface",
-            "displayName": "Biome",
-            "contents": []
-            },
-            {
-            "@type": "Interface",
-            "displayName": "Habitat",
-            "contents": []
-            },
-            {
-            "@type": "Interface",
-            "displayName": "Population",
-            "contents": [
-            {
-            "@type": "Interface",
-            "displayName": "PopulationGroup",
-            "contents": []
-            }
-            ]
-            },
-            {
-            "@type": "Interface",
-            "displayName": "FoodWeb",
-            "contents": [
-            {
-            "@type": "Interface",
-            "displayName": "Producer",
-            "extends": [
-            "dtmi:myorganization:biosphere;1;Organism;Plant"
-            ],
-            "contents": [
-            {
-            "@type": "Telemetry",
-            "name": "photosynthesisRate",
-            "schema": "double"
-            }
-            ]
-            },
-            {
-            "@type": "Interface",
-            "displayName": "Consumer",
-            "contents": [
-            {
-            "@type": "Interface",
-            "displayName": "Herbivore",
-            "extends": [
-            "dtmi:myorganization:biosphere;1;Organism;Animal;Herbivore"
-            ],
-            "contents": [
-            {
-            "@type": "Telemetry",
-            "name": "digestionEfficiency",
-            "schema": "double"
-            }
-            ]
-            },
-            {
-            "@type": "Interface",
-            "displayName": "Carnivore",
-            "extends": [
-            "dtmi:myorganization:biosphere;1;Organism;Animal;Carnivore"
-            ],
-            "contents": [
-            {
-            "@type": "Telemetry",
-            "name": "huntingSuccessRate",
-            "schema": "double"
-            }
-            ]
-            },
-            {
-            "@type": "Interface",
-            "displayName": "Omnivore",
-            "extends": [
-            "dtmi:myorganization:biosphere;1;Organism;Animal;Omnivore"
-            ],
-            "contents": [
-            {
-            "@type": "Telemetry",
-            "name": "digestionEfficiency",
-            "schema": "double"
-            },
-            {
-            "@type": "Telemetry",
-            "name": "huntingSuccessRate",
-            "schema": "double"
-            }
-            ]
-            }
-            ]
-            }
-            ]
-            }
-            ]
-            }
-            ]
-            }
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "area_km2",
+        "displayName": "Area (km²)",
+        "description": "Total area of this forest in square kilometres.",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Telemetry",
+        "name": "canopyCoverPercentage",
+        "displayName": "Canopy Cover (%)",
+        "description": "Current canopy cover percentage of this forest.",
+        "schema": "double"
+      },
+      {
+        "@type": "Telemetry",
+        "name": "carbonStockPgC",
+        "displayName": "Carbon Stock (PgC)",
+        "description": "Current above-ground carbon stock stored in this forest in petagrams of carbon.",
+        "schema": "double"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Grassland;1",
+    "@type": "Interface",
+    "displayName": "Grassland",
+    "description": "An area where the vegetation is dominated by grasses and other non-woody plants. Grasslands cover approximately 40% of Earth's land surface and are vital for food production and carbon storage.",
+    "extends": "dtmi:earthontology:Biosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Grassland Name",
+        "description": "Name or identifier of this grassland region.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "grasslandType",
+        "displayName": "Grassland Type",
+        "description": "The type of grassland biome.",
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "string",
+          "enumValues": [
+            { "name": "savanna",   "displayName": "Savanna",           "enumValue": "savanna" },
+            { "name": "prairie",   "displayName": "Prairie",           "enumValue": "prairie" },
+            { "name": "steppe",    "displayName": "Steppe",            "enumValue": "steppe" },
+            { "name": "pampas",    "displayName": "Pampas",            "enumValue": "pampas" }
+          ]
+        },
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "area_km2",
+        "displayName": "Area (km²)",
+        "description": "Total area of this grassland in square kilometres.",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Telemetry",
+        "name": "soilCarbonPgC",
+        "displayName": "Soil Carbon Stock (PgC)",
+        "description": "Current soil carbon stock of this grassland in petagrams of carbon.",
+        "schema": "double"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Desert;1",
+    "@type": "Interface",
+    "displayName": "Desert",
+    "description": "A barren landscape that receives less than 250 mm of precipitation per year. Deserts cover approximately 33% of Earth's land surface and include hot, cold, and coastal varieties.",
+    "extends": "dtmi:earthontology:Biosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Desert Name",
+        "description": "Name of this desert.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "desertType",
+        "displayName": "Desert Type",
+        "description": "The type of desert.",
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "string",
+          "enumValues": [
+            { "name": "hot",     "displayName": "Hot Desert",     "enumValue": "hot" },
+            { "name": "cold",    "displayName": "Cold Desert",    "enumValue": "cold" },
+            { "name": "coastal", "displayName": "Coastal Desert", "enumValue": "coastal" },
+            { "name": "polar",   "displayName": "Polar Desert",   "enumValue": "polar" }
+          ]
+        },
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "area_km2",
+        "displayName": "Area (km²)",
+        "description": "Total area of this desert in square kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "annualPrecipitationMm",
+        "displayName": "Annual Precipitation (mm)",
+        "description": "Annual precipitation of this desert in millimetres.",
+        "schema": "double"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Mountain;1",
+    "@type": "Interface",
+    "displayName": "Mountain",
+    "description": "A large landform rising steeply above its surroundings, typically above 600 m. Mountains cover approximately 24% of Earth's land surface and are critical water towers and biodiversity refugia.",
+    "extends": "dtmi:earthontology:Biosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Mountain Name",
+        "description": "Name of this mountain.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "elevationM",
+        "displayName": "Elevation (m)",
+        "description": "Peak elevation of this mountain above sea level in metres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "rangeOrMassif",
+        "displayName": "Range or Massif",
+        "description": "The mountain range or massif this mountain belongs to.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Relationship",
+        "name": "isLocatedIn",
+        "displayName": "Is Located In",
+        "description": "A mountain may be located within or on the boundary of the Lithosphere and Biosphere.",
+        "target": "dtmi:earthontology:Lithosphere;1",
+        "maxMultiplicity": 1
+      }
+    ]
+  }
+]

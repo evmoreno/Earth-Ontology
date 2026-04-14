@@ -1,0 +1,185 @@
+[
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Atmosphere;1",
+    "@type": "Interface",
+    "displayName": "Atmosphere",
+    "description": "The layer of gases held by Earth's gravity that surrounds the planet and protects life by absorbing UV radiation, warming the surface, and reducing temperature extremes.",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "totalMassKg",
+        "displayName": "Total Mass (kg)",
+        "description": "Approximate total mass of Earth's atmosphere in kilograms.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "co2ConcentrationPpm",
+        "displayName": "CO₂ Concentration (ppm)",
+        "description": "Current atmospheric CO₂ concentration in parts per million.",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Telemetry",
+        "name": "co2Reading",
+        "displayName": "CO₂ Reading (ppm)",
+        "description": "Real-time atmospheric CO₂ concentration telemetry.",
+        "schema": "double"
+      },
+      {
+        "@type": "Relationship",
+        "name": "isPartOf",
+        "displayName": "Is Part Of",
+        "description": "The Atmosphere is part of Earth.",
+        "target": "dtmi:earthontology:Earth;1",
+        "maxMultiplicity": 1
+      },
+      {
+        "@type": "Relationship",
+        "name": "interactsWith",
+        "displayName": "Interacts With",
+        "description": "The Atmosphere interacts with the Biosphere through gas exchange, weather, and climate.",
+        "target": "dtmi:earthontology:Biosphere;1"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Troposphere;1",
+    "@type": "Interface",
+    "displayName": "Troposphere",
+    "description": "The lowest layer of Earth's atmosphere, from the surface to approximately 12 km altitude. Contains 75% of atmospheric mass and virtually all weather phenomena.",
+    "extends": "dtmi:earthontology:Atmosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "altitudeRangeKm",
+        "displayName": "Altitude Range (km)",
+        "description": "Altitude range of the Troposphere from surface level (0 km) to approximately 12 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "avgTemperatureCelsius",
+        "displayName": "Average Temperature (°C)",
+        "description": "Average temperature within the Troposphere.",
+        "schema": "double",
+        "writable": true
+      },
+      {
+        "@type": "Telemetry",
+        "name": "weatherEvent",
+        "displayName": "Weather Event",
+        "description": "Current weather condition telemetry (e.g. storm, clear, rain).",
+        "schema": "string"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Stratosphere;1",
+    "@type": "Interface",
+    "displayName": "Stratosphere",
+    "description": "The atmospheric layer above the Troposphere, from approximately 12–50 km altitude. Contains the ozone layer which absorbs and scatters UV solar radiation.",
+    "extends": "dtmi:earthontology:Atmosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "altitudeRangeKm",
+        "displayName": "Altitude Range (km)",
+        "description": "Altitude range of the Stratosphere, approximately 12–50 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "ozoneDobsonUnits",
+        "displayName": "Ozone Layer Thickness (Dobson Units)",
+        "description": "Thickness of the ozone layer measured in Dobson Units.",
+        "schema": "double",
+        "writable": true
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Mesosphere;1",
+    "@type": "Interface",
+    "displayName": "Mesosphere",
+    "description": "The atmospheric layer above the Stratosphere, from approximately 50–80 km altitude. The layer where most meteors burn up upon entering Earth's atmosphere.",
+    "extends": "dtmi:earthontology:Atmosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "altitudeRangeKm",
+        "displayName": "Altitude Range (km)",
+        "description": "Altitude range of the Mesosphere, approximately 50–80 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "minTemperatureCelsius",
+        "displayName": "Minimum Temperature (°C)",
+        "description": "Minimum temperature recorded in the Mesosphere, typically around -90°C.",
+        "schema": "double",
+        "writable": false
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Thermosphere;1",
+    "@type": "Interface",
+    "displayName": "Thermosphere",
+    "description": "The atmospheric layer above the Mesosphere, from approximately 80–600 km altitude. Where auroras (Northern and Southern Lights) occur and where the International Space Station orbits.",
+    "extends": "dtmi:earthontology:Atmosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "altitudeRangeKm",
+        "displayName": "Altitude Range (km)",
+        "description": "Altitude range of the Thermosphere, approximately 80–600 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "auroraActivity",
+        "displayName": "Aurora Activity",
+        "description": "Current aurora activity level (none, low, moderate, high, extreme).",
+        "schema": "string"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Exosphere;1",
+    "@type": "Interface",
+    "displayName": "Exosphere",
+    "description": "The outermost layer of Earth's atmosphere, from approximately 600–10,000 km altitude. Gases gradually thin and merge with interplanetary space. Transitions into Geospace.",
+    "extends": "dtmi:earthontology:Atmosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "altitudeRangeKm",
+        "displayName": "Altitude Range (km)",
+        "description": "Altitude range of the Exosphere, approximately 600–10,000 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Relationship",
+        "name": "transitionsInto",
+        "displayName": "Transitions Into",
+        "description": "The Exosphere gradually transitions into Geospace at its upper boundary.",
+        "target": "dtmi:earthontology:Geospace;1",
+        "maxMultiplicity": 1
+      }
+    ]
+  }
+]

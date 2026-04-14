@@ -1,0 +1,205 @@
+[
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Hydrosphere;1",
+    "@type": "Interface",
+    "displayName": "Hydrosphere",
+    "description": "All water on, under, and above Earth's surface — including oceans, lakes, rivers, groundwater, ice caps, and water vapour in the atmosphere.",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "totalVolumeKm3",
+        "displayName": "Total Volume (km³)",
+        "description": "Estimated total volume of water in Earth's hydrosphere in cubic kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "saltWaterPercentage",
+        "displayName": "Salt Water (%)",
+        "description": "Percentage of the hydrosphere that is salt water (approximately 97.5%).",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "freshWaterPercentage",
+        "displayName": "Fresh Water (%)",
+        "description": "Percentage of the hydrosphere that is fresh water (approximately 2.5%).",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "globalSeaLevelMm",
+        "displayName": "Global Mean Sea Level (mm)",
+        "description": "Real-time or periodically updated global mean sea level relative to a baseline in millimetres.",
+        "schema": "double"
+      },
+      {
+        "@type": "Relationship",
+        "name": "isPartOf",
+        "displayName": "Is Part Of",
+        "description": "The Hydrosphere is part of Earth.",
+        "target": "dtmi:earthontology:Earth;1",
+        "maxMultiplicity": 1
+      },
+      {
+        "@type": "Relationship",
+        "name": "interactsWith",
+        "displayName": "Interacts With",
+        "description": "The Hydrosphere interacts with the Biosphere through the water cycle, aquatic habitats, and nutrient transport.",
+        "target": "dtmi:earthontology:Biosphere;1"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Ocean;1",
+    "@type": "Interface",
+    "displayName": "Ocean",
+    "description": "A large body of saltwater that covers approximately 71% of Earth's surface. The five oceans are the Pacific, Atlantic, Indian, Southern, and Arctic.",
+    "extends": "dtmi:earthontology:Hydrosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Ocean Name",
+        "description": "Name of this ocean (Pacific, Atlantic, Indian, Southern, Arctic).",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "areaMillion_km2",
+        "displayName": "Area (million km²)",
+        "description": "Surface area of this ocean in millions of square kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "averageDepthM",
+        "displayName": "Average Depth (m)",
+        "description": "Average depth of this ocean in metres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "surfaceTemperatureCelsius",
+        "displayName": "Sea Surface Temperature (°C)",
+        "description": "Real-time sea surface temperature telemetry in degrees Celsius.",
+        "schema": "double"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Lake;1",
+    "@type": "Interface",
+    "displayName": "Lake",
+    "description": "A body of still fresh or saline water surrounded by land and not directly connected to the ocean. Lakes occupy approximately 1.8% of Earth's land surface.",
+    "extends": "dtmi:earthontology:Hydrosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Lake Name",
+        "description": "Name of this lake.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "area_km2",
+        "displayName": "Area (km²)",
+        "description": "Surface area of this lake in square kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "isFreshwater",
+        "displayName": "Is Freshwater",
+        "description": "Indicates whether this is a freshwater (true) or saline (false) lake.",
+        "schema": "boolean",
+        "writable": false
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:River;1",
+    "@type": "Interface",
+    "displayName": "River",
+    "description": "A natural flowing watercourse that moves towards an ocean, sea, lake, or another river. Rivers are primary conduits of the freshwater cycle.",
+    "extends": "dtmi:earthontology:Hydrosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "River Name",
+        "description": "Name of this river.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "lengthKm",
+        "displayName": "Length (km)",
+        "description": "Total length of this river in kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "flowRateM3s",
+        "displayName": "Flow Rate (m³/s)",
+        "description": "Current volumetric flow rate at the river mouth in cubic metres per second.",
+        "schema": "double"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Glacier;1",
+    "@type": "Interface",
+    "displayName": "Glacier",
+    "description": "A persistent mass of ice that forms where the accumulation of snow exceeds its ablation over many years. Glaciers store approximately 69% of Earth's fresh water.",
+    "extends": "dtmi:earthontology:Hydrosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "name",
+        "displayName": "Glacier Name",
+        "description": "Name of this glacier.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "area_km2",
+        "displayName": "Area (km²)",
+        "description": "Surface area of this glacier in square kilometres.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "massBalanceMmWaterEquiv",
+        "displayName": "Mass Balance (mm water equiv.)",
+        "description": "Annual mass balance of this glacier in millimetres of water equivalent. Negative values indicate net ice loss.",
+        "schema": "double"
+      },
+      {
+        "@type": "Telemetry",
+        "name": "retreatRateMperYear",
+        "displayName": "Retreat Rate (m/year)",
+        "description": "Current rate of glacial retreat in metres per year.",
+        "schema": "double"
+      }
+    ]
+  }
+]

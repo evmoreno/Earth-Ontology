@@ -1,111 +1,165 @@
-{
-    "@context": "dtmi:dtdl:context;2",
-    "@id": "dtmi:myorganization:lithosphere;1",
+[
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Lithosphere;1",
     "@type": "Interface",
     "displayName": "Lithosphere",
+    "description": "The rigid, outermost mechanical layer of Earth, comprising the crust and the uppermost portion of the mantle. Broken into tectonic plates that move over the asthenosphere.",
     "contents": [
-        {
-            "@type": "Interface",
-            "displayName": "Crust",
-            "contents": [
-                {
-                    "@type": "Interface",
-                    "displayName": "ContinentalCrust",
-                    "extends": [
-                        "dtmi:myorganization:lithosphere;1;Crust"
-                    ],
-                    "contents": [
-                        {
-                            "@type": "Telemetry",
-                            "name": "thickness",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "density",
-                            "schema": "double"
-                        }
-                    ]
-                },
-                {
-                    "@type": "Interface",
-                    "displayName": "OceanicCrust",
-                    "extends": [
-                        "dtmi:myorganization:lithosphere;1;Crust"
-                    ],
-                    "contents": [
-                        {
-                            "@type": "Telemetry",
-                            "name": "thickness",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "density",
-                            "schema": "double"
-                        }
-                    ]
-                }
-            ]
+      {
+        "@type": "Property",
+        "name": "averageThicknessKm",
+        "displayName": "Average Thickness (km)",
+        "description": "Average thickness of the Lithosphere in kilometres (typically 100–200 km).",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "numberOfTectonicPlates",
+        "displayName": "Number of Tectonic Plates",
+        "description": "Number of major tectonic plates making up the Lithosphere.",
+        "schema": "integer",
+        "writable": false
+      },
+      {
+        "@type": "Telemetry",
+        "name": "seismicActivity",
+        "displayName": "Seismic Activity",
+        "description": "Current global seismic activity level (quiescent, minor, moderate, major, great).",
+        "schema": "string"
+      },
+      {
+        "@type": "Relationship",
+        "name": "isPartOf",
+        "displayName": "Is Part Of",
+        "description": "The Lithosphere is part of Earth.",
+        "target": "dtmi:earthontology:Earth;1",
+        "maxMultiplicity": 1
+      },
+      {
+        "@type": "Relationship",
+        "name": "interactsWith",
+        "displayName": "Interacts With",
+        "description": "The Lithosphere interacts with the Biosphere through soil formation, mineral cycles, and tectonic events.",
+        "target": "dtmi:earthontology:Biosphere;1"
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Crust;1",
+    "@type": "Interface",
+    "displayName": "Crust",
+    "description": "The outermost solid layer of the Lithosphere, comprising oceanic crust (5–10 km thick) and continental crust (30–50 km thick). The layer on which all surface life exists.",
+    "extends": "dtmi:earthontology:Lithosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "crustType",
+        "displayName": "Crust Type",
+        "description": "Type of crust: oceanic or continental.",
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "string",
+          "enumValues": [
+            { "name": "oceanic",      "displayName": "Oceanic",      "enumValue": "oceanic" },
+            { "name": "continental",  "displayName": "Continental",  "enumValue": "continental" }
+          ]
         },
-        {
-            "@type": "Interface",
-            "displayName": "Mantle",
-            "contents": [
-                {
-                    "@type": "Interface",
-                    "displayName": "UpperMantle",
-                    "contents": [
-                        {
-                            "@type": "Telemetry",
-                            "name": "density",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "temperature",
-                            "schema": "double"
-                        }
-                    ]
-                },
-                {
-                    "@type": "Interface",
-                    "displayName": "LowerMantle",
-                    "contents": [
-                        {
-                            "@type": "Telemetry",
-                            "name": "density",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "temperature",
-                            "schema": "double"
-                        }
-                    ]
-                }
-            ]
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "averageThicknessKm",
+        "displayName": "Average Thickness (km)",
+        "description": "Average thickness of this crust type in kilometres.",
+        "schema": "double",
+        "writable": false
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Mantle;1",
+    "@type": "Interface",
+    "displayName": "Mantle",
+    "description": "The layer of Earth between the Crust and the Core, extending from approximately 35–2900 km depth. Composed of silicate rock and drives tectonic plate movement through convection.",
+    "extends": "dtmi:earthontology:Lithosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "depthRangeKm",
+        "displayName": "Depth Range (km)",
+        "description": "Depth range of the Mantle, approximately 35–2900 km.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "avgTemperatureCelsius",
+        "displayName": "Average Temperature (°C)",
+        "description": "Average temperature within the Mantle, approximately 1000–3700°C.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "convectionActive",
+        "displayName": "Convection Active",
+        "description": "Indicates whether mantle convection currents are currently active.",
+        "schema": "boolean",
+        "writable": false
+      }
+    ]
+  },
+  {
+    "@context": "dtmi:dtdl:context;3",
+    "@id": "dtmi:earthontology:Core;1",
+    "@type": "Interface",
+    "displayName": "Core",
+    "description": "The innermost layer of Earth, comprising a liquid outer core (2900–5150 km depth) and a solid inner core (5150–6371 km depth). Composed primarily of iron and nickel. Generates Earth's magnetic field.",
+    "extends": "dtmi:earthontology:Lithosphere;1",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "coreType",
+        "displayName": "Core Type",
+        "description": "Whether this is the inner (solid) or outer (liquid) core.",
+        "schema": {
+          "@type": "Enum",
+          "valueSchema": "string",
+          "enumValues": [
+            { "name": "inner", "displayName": "Inner Core (solid)", "enumValue": "inner" },
+            { "name": "outer", "displayName": "Outer Core (liquid)", "enumValue": "outer" }
+          ]
         },
-        {
-            "@type": "Interface",
-            "displayName": "Core",
-            "contents": [
-                {
-                    "@type": "Interface",
-                    "displayName": "OuterCore",
-                    "contents": [
-                        {
-                            "@type": "Telemetry",
-                            "name": "density",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "temperature",
-                            "schema": "double"
-                        },
-                        {
-                            "@type": "Telemetry",
-                            "name": "magneticField",
-                            "schema": "double"
-                        }]}]}]}
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "depthRangeKm",
+        "displayName": "Depth Range (km)",
+        "description": "Depth range of this core layer in kilometres.",
+        "schema": "string",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "avgTemperatureCelsius",
+        "displayName": "Average Temperature (°C)",
+        "description": "Estimated temperature of the Core, approximately 5000–6000°C.",
+        "schema": "double",
+        "writable": false
+      },
+      {
+        "@type": "Property",
+        "name": "generatesMagneticField",
+        "displayName": "Generates Magnetic Field",
+        "description": "Indicates that the liquid outer core generates Earth's geomagnetic field.",
+        "schema": "boolean",
+        "writable": false
+      }
+    ]
+  }
+]

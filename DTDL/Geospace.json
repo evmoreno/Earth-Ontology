@@ -1,0 +1,41 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:earthontology:Geospace;1",
+  "@type": "Interface",
+  "displayName": "Geospace",
+  "description": "The region of outer space near Earth, including the magnetosphere, radiation belts, and the region influenced by Earth's magnetic field. Sits between the Exosphere and interplanetary space.",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "magnetosphereExtentKm",
+      "displayName": "Magnetosphere Extent (km)",
+      "description": "Approximate extent of Earth's magnetosphere on the sunward side in kilometres.",
+      "schema": "double",
+      "writable": true
+    },
+    {
+      "@type": "Property",
+      "name": "hasVanAllenBelts",
+      "displayName": "Has Van Allen Belts",
+      "description": "Indicates the presence of Van Allen radiation belts within Geospace.",
+      "schema": "boolean",
+      "writable": false
+    },
+    {
+      "@type": "Relationship",
+      "name": "isPartOf",
+      "displayName": "Is Part Of",
+      "description": "Geospace is part of the broader Universe.",
+      "target": "dtmi:earthontology:Universe;1",
+      "maxMultiplicity": 1
+    },
+    {
+      "@type": "Relationship",
+      "name": "encompasses",
+      "displayName": "Encompasses",
+      "description": "Geospace encompasses Earth and its surrounding atmospheric layers.",
+      "target": "dtmi:earthontology:Earth;1",
+      "maxMultiplicity": 1
+    }
+  ]
+}

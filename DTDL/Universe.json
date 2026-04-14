@@ -1,0 +1,33 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:earthontology:Universe;1",
+  "@type": "Interface",
+  "displayName": "Universe",
+  "description": "The totality of space, time, matter, and energy. The broadest context in which Earth and all celestial objects exist.",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "estimatedAgeBillionYears",
+      "displayName": "Estimated Age (billion years)",
+      "description": "Approximate age of the Universe in billions of years.",
+      "schema": "double",
+      "writable": true
+    },
+    {
+      "@type": "Property",
+      "name": "observableRadiusLightYears",
+      "displayName": "Observable Radius (light-years)",
+      "description": "Approximate radius of the observable universe in light-years.",
+      "schema": "double",
+      "writable": true
+    },
+    {
+      "@type": "Relationship",
+      "name": "contains",
+      "displayName": "Contains",
+      "description": "The Universe contains celestial objects and systems such as galaxies, star systems, and planets.",
+      "target": "dtmi:earthontology:Geospace;1",
+      "maxMultiplicity": 1
+    }
+  ]
+}

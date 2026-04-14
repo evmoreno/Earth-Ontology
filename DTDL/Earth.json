@@ -1,0 +1,80 @@
+{
+  "@context": "dtmi:dtdl:context;3",
+  "@id": "dtmi:earthontology:Earth;1",
+  "@type": "Interface",
+  "displayName": "Earth",
+  "description": "The third planet from the Sun and the only known astronomical object to harbour life. Root class of the Earth Systems Ontology.",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "radiusKm",
+      "displayName": "Radius (km)",
+      "description": "Mean radius of the Earth in kilometres.",
+      "schema": "double",
+      "writable": false
+    },
+    {
+      "@type": "Property",
+      "name": "massKg",
+      "displayName": "Mass (kg)",
+      "description": "Mass of the Earth in kilograms.",
+      "schema": "double",
+      "writable": false
+    },
+    {
+      "@type": "Property",
+      "name": "surfaceTemperatureCelsius",
+      "displayName": "Mean Surface Temperature (°C)",
+      "description": "Current mean global surface temperature in degrees Celsius.",
+      "schema": "double",
+      "writable": true
+    },
+    {
+      "@type": "Telemetry",
+      "name": "globalMeanTemperature",
+      "displayName": "Global Mean Temperature (°C)",
+      "description": "Real-time or periodically updated global mean surface temperature telemetry.",
+      "schema": "double"
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasAtmosphere",
+      "displayName": "Has Atmosphere",
+      "description": "Relates Earth to its surrounding atmosphere.",
+      "target": "dtmi:earthontology:Atmosphere;1",
+      "maxMultiplicity": 1
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasLithosphere",
+      "displayName": "Has Lithosphere",
+      "description": "Relates Earth to its solid outer lithosphere.",
+      "target": "dtmi:earthontology:Lithosphere;1",
+      "maxMultiplicity": 1
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasHydrosphere",
+      "displayName": "Has Hydrosphere",
+      "description": "Relates Earth to its hydrosphere — all surface and atmospheric water.",
+      "target": "dtmi:earthontology:Hydrosphere;1",
+      "maxMultiplicity": 1
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasBiosphere",
+      "displayName": "Has Biosphere",
+      "description": "Relates Earth to its biosphere — all living organisms and their interactions.",
+      "target": "dtmi:earthontology:Biosphere;1",
+      "maxMultiplicity": 1
+    },
+    {
+      "@type": "Relationship",
+      "name": "isLocatedIn",
+      "displayName": "Is Located In",
+      "description": "Earth is located within Geospace.",
+      "target": "dtmi:earthontology:Geospace;1",
+      "maxMultiplicity": 1
+    }
+  ]
+}
