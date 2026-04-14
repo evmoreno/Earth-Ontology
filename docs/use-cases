@@ -1,1 +1,190 @@
-#BeInspired
+Earth Ontology — Use Cases
+Repository: evmoreno/Earth-Ontology
+Version: 1.0
+Related files: ontology-reference.md, earth-systems-simulator.html
+
+Overview
+The Earth Ontology models Earth's systems as a set of DTDL v3 interfaces deployable in Azure Digital Twins. This document catalogs use cases across six domains: live monitoring, research, policy, education, health, and extension/integration. Each use case identifies the relevant interfaces, the data sources that would feed it, and the ADT capability it exercises.
+
+1. Live Earth monitoring
+1.1 Real-time atmospheric carbon dashboard
+What it does: Connects the Atmosphere twin's co2Reading telemetry to NOAA's Mauna Loa CO₂ API, displaying live atmospheric CO₂ against pre-industrial and IPCC threshold values.
+Interfaces used: Atmosphere, Troposphere, Earth
+Data sources: NOAA Global Monitoring Laboratory (daily CO₂ feed)
+ADT capability: Telemetry ingestion via IoT Hub → Azure Function → ADT SDK
+Extension: Add co2ConcentrationPpm property update to trigger an Azure Logic App alert when 450ppm threshold is crossed
+
+1.2 Ocean heat content tracker
+What it does: Routes NOAA/Argo float sea surface temperature data into Ocean twin telemetry, tracking global ocean warming across the five named ocean twins.
+Interfaces used: Hydrosphere, Ocean
+Data sources: NOAA World Ocean Atlas, Argo float data
+ADT capability: Multiple twin instances (Pacific, Atlantic, Indian, Southern, Arctic) queried in aggregate
+Key query:
+sqlSELECT AVG(T.surfaceTemperatureCelsius)
+FROM DIGITALTWINS T
+WHERE IS_OF_MODEL('dtmi:earthontology:Ocean;1')
+
+1.3 Glacier retreat monitor
+What it does: Tracks massBalanceMmWaterEquiv and retreatRateMperYear telemetry on individual Glacier twins, using World Glacier Monitoring Service data. Flags glaciers with accelerating negative mass balance.
+Interfaces used: Glacier, Hydrosphere
+Data sources: World Glacier Monitoring Service (annual mass balance), NSIDC (extent data)
+ADT capability: Threshold-based alerting via ADT event routing to Event Grid
+Real-world relevance: Directly monitors freshwater supply to the ~2 billion people depending on glacial meltwater (Ganges, Yangtze, Colorado, Rhône basins)
+
+1.4 Coral bleaching early warning system
+What it does: Ingests NOAA Coral Reef Watch satellite-derived sea surface temperature anomaly data into CoralReef twin telemetry, triggering alerts at bleaching alert level 2 (mass bleaching threshold).
+Interfaces used: CoralReef, Ocean, Biosphere
+Data sources: NOAA Coral Reef Watch (daily 5km resolution SST anomaly)
+ADT capability: Cross-sphere JOIN query linking CoralReef bleaching alert level to adjacent Ocean surface temperature twin
+Key query:
+sqlSELECT C, O FROM DIGITALTWINS C
+JOIN O RELATED C.locatedInOcean
+WHERE IS_OF_MODEL(C, 'dtmi:earthontology:CoralReef;1')
+AND C.bleachingAlertLevel >= 3
+AND O.surfaceTemperatureCelsius > 28
+
+1.5 Species population watchlist
+What it does: Maintains Species twins for all IUCN Critically Endangered and Endangered species, with populationTrend telemetry updated from IUCN Red List API and GBIF occurrence data. Surfaces declining populations to conservation managers.
+Interfaces used: Species, Population, Forest, Wetland, CoralReef
+Data sources: IUCN Red List API, GBIF Occurrence API
+ADT capability: Graph traversal from ecosystem twins to resident species twins via supportsSpecies relationship
+Key query:
+sqlSELECT * FROM DIGITALTWINS
+WHERE IS_OF_MODEL('dtmi:earthontology:Species;1')
+AND iucnStatus = 'CR'
+
+2. Climate and Earth science research
+2.1 Cross-sphere feedback analysis
+What it does: Uses the interactsWith relationships between Biosphere, Atmosphere, and Hydrosphere to query compounding stress signals — e.g. find ecosystem twins where forest carbon loss, elevated CO₂, and ocean warming are simultaneously above threshold.
+Interfaces used: All sphere interfaces
+Research value: Models the feedback loops described in IPCC AR6 — particularly the permafrost–methane–warming loop (via Wetland.methaneFluxMgM2Day) and the forest–albedo–precipitation loop (via Forest.canopyCoverPercentage and Atmosphere.co2ConcentrationPpm)
+ADT capability: Multi-hop JOIN across interactsWith relationships
+Publication potential: Novel application of digital twin graph traversal to cross-sphere climate feedback detection
+
+2.2 Soil carbon sequestration mapping
+What it does: Queries SoilProfile twins by organicCarbonPercentage and microbialBiomassCMgKg to identify high-potential carbon sequestration areas. Crosses with Forest and Grassland twin locations to prioritise restoration sites.
+Interfaces used: SoilProfile, Forest, Grassland, Catchment
+Data sources: ISRIC World Soil Database, SoilGrids
+Research value: Soils store ~2,500 PgC — more carbon than the atmosphere and all vegetation combined. Identifying degraded high-potential soils is a key gap in carbon accounting.
+
+2.3 Trophic cascade modelling
+What it does: Links Population twins of keystone species (isKeystone = true) to their habitat ecosystem twins. Tracks whether removal or recovery of a keystone population correlates with measurable changes in ecosystem telemetry (e.g. wolf reintroduction → vegetation recovery → catchment hydrology change).
+Interfaces used: Species, Population, Forest, Catchment, River
+Research value: Digital twin graph representation of trophic cascades makes the Ripple & Beschta (2012) Yellowstone model queryable and extensible to other systems
+ADT capability: Graph path query from Population → habitatIn → Catchment → drainsTo → River
+
+2.4 Volcanic forcing and atmospheric cooling
+What it does: Models the paradox observed in the simulator's super-eruption scenario — high volcanic SO₂ input temporarily suppresses surface temperature despite rising CO₂. Queries the relationship between Lithosphere.seismicActivity, Atmosphere.co2ConcentrationPpm, and Earth.surfaceTemperatureCelsius in historical data.
+Interfaces used: Lithosphere, Atmosphere, Earth
+Data sources: Smithsonian Global Volcanism Program, NASA GISS Surface Temperature
+Research value: Validates and calibrates the simplified feedback model in the Earth Systems Simulator against real historical volcanic forcing events (Pinatubo 1991, Tambora 1815)
+
+3. Policy and governance
+3.1 SDG indicator monitoring framework
+What it does: Maps ADT twin telemetry fields directly to UN Sustainable Development Goal indicators, creating a queryable SDG dashboard backed by Earth twin data.
+SDG mappings:
+SDGIndicatorOntology fieldSDG 13 — Climate ActionCO₂ concentration trendAtmosphere.co2ReadingSDG 14 — Life Below WaterCoral reef coverCoralReef.coralCoverPercentageSDG 14 — Life Below WaterOcean acidificationOcean → pH derived from Atmosphere.co2ConcentrationPpmSDG 15 — Life on LandForest area changeForest.area_km2SDG 15 — Life on LandRed List IndexSpecies.iucnStatus aggregateSDG 6 — Clean WaterFreshwater availabilityGlacier.massBalanceMmWaterEquiv, Catchment.annualRunoffMm
+Interfaces used: All
+Policy value: Single queryable ADT instance replacing multiple disconnected national reporting spreadsheets
+
+3.2 30x30 protected area coverage tracker
+What it does: Maintains Population twins for species within designated protected areas (protectedAreaName property), tracking whether the 30x30 target (30% of land and ocean protected by 2030) is being met and whether protection is translating to annualGrowthRatePercentage improvement.
+Interfaces used: Species, Population, Forest, Wetland, CoralReef, Ocean
+Policy value: Moves beyond area coverage metrics to outcome metrics — whether protection is actually working for species populations
+Data sources: World Database on Protected Areas, IUCN Red List API
+
+3.3 National carbon budget accounting
+What it does: Aggregates Forest.carbonStockPgC, Grassland.soilCarbonPgC, Wetland.carbonStockPgC, and SoilProfile.organicCarbonPercentage by geographic region to produce national carbon stock inventories for Paris Agreement reporting.
+Interfaces used: Forest, Grassland, Wetland, SoilProfile, Atmosphere
+Policy value: DTDL-backed carbon accounting is auditable and queryable — a significant improvement over static national inventory spreadsheets
+Standards alignment: Aligns with IPCC 2006 Guidelines for National Greenhouse Gas Inventories, Tier 2/3 land-use categories
+
+3.4 Climate tipping point early warning
+What it does: Defines threshold queries across multiple sphere twins that, when simultaneously breached, signal proximity to known climate tipping points. Implements the tipping point cascade described in Lenton et al. (2019).
+Tipping point queries:
+Tipping elementTrigger conditionInterfaces involvedAmazon diebackForest.canopyCoverPercentage < 75 AND Forest.area_km2 declining AND regional temp > 4°C above baselineForest, AtmosphereWest Antarctic Ice SheetGlacier.massBalanceMmWaterEquiv < -500 sustained 10yrGlacier, HydrosphereCoral reef collapseCoralReef.coralCoverPercentage < 10 across >50% of reef twinsCoralReef, OceanPermafrost methaneWetland.methaneFluxMgM2Day anomaly > 2σ across Arctic wetland twinsWetland, Atmosphere
+Reference: Lenton, T.M. et al. (2019). Climate tipping points — too risky to bet against. Nature, 575, 592–595. https://doi.org/10.1038/d41586-019-03595-0
+
+4. Education and public engagement
+4.1 Earth Systems Simulator (interactive)
+What it does: A standalone HTML tool (included in /DOCS/earth-systems-simulator.html) that exposes the eight key DTDL telemetry parameters as drag sliders, computing derived cross-sphere outputs in real time. Three preset scenarios — Hothouse Earth, Super-eruption, and Restored Earth — demonstrate the range of Earth system states.
+Educational value: Makes the interactsWith relationships in the ontology viscerally tangible. The path from baseline (420ppm CO₂) to Restored Earth (310ppm) demonstrates why biosphere restoration — the most humanly tractable parameter — is the primary near-term lever.
+Audience: Secondary school, university, public science communication
+No dependencies: Pure HTML/CSS/JS, runs offline in any browser
+
+4.2 ADT Explorer as a teaching environment
+What it does: Students upload the DTDL model files to a shared ADT Explorer instance, instantiate twins for specific locations (e.g. Great Barrier Reef CoralReef twin, Amazon Forest twin), populate properties from published data, and run graph traversal queries.
+Learning outcomes: DTDL modelling concepts, digital twin graph structure, ADT query language, cross-sphere relationship reasoning
+Audience: University students in environmental science, data science, or cloud architecture
+Curriculum fit: Aligns with AQF Level 7/8 environmental science and ICT units
+
+4.3 Species twin card collection
+What it does: Each Species twin, when instantiated in ADT Explorer with iucnStatus, estimatedPopulation, and populationTrend populated from the IUCN Red List, functions as a living data card for that species — a digital twin counterpart to physical collector cards, with real conservation data.
+Educational value: Makes abstract biodiversity statistics concrete and personal. A student can "own" a twin for a species they care about, watch its population telemetry, and understand the habitatIn relationship to a Forest or CoralReef twin
+Engagement hook: Leaderboard of population growth rates — which managed/reintroduced Population twins show the strongest annualGrowthRatePercentage recovery?
+
+4.4 Baseline to Restored Earth classroom exercise
+What it does: Using the simulator, students are challenged to move from baseline to Restored Earth parameters in the minimum number of interventions, then justify their choices with reference to the interactsWith relationship graph and the sources in ontology-reference.md.
+Learning outcomes: Systems thinking, understanding of feedback loops, evidence-based argument, climate science literacy
+Discussion prompt: Why does the ocean temperature lag every other parameter? What does that tell us about the urgency of acting now even though results appear slowly?
+
+5. Human health — Soul for Life alignment
+5.1 Environmental determinants of health dashboard
+What it does: Extends the ontology with a HumanHealth interface that interactsWith Atmosphere (air quality), Hydrosphere (freshwater access), and Biosphere (food systems, zoonotic disease risk). Queries compounding environmental health risks by geography.
+Interfaces used: HumanHealth (proposed), Atmosphere, Hydrosphere, Catchment, Species
+Health pathways modelled:
+Environmental signalHealth impactOntology linkAtmosphere.co2ConcentrationPpm risingReduced crop nutrition (CO₂ fertilisation reduces protein/micronutrient density)Atmosphere → Biosphere → HumanHealthCatchment.sedimentLoadMgL elevatedFreshwater contamination, waterborne diseaseHydrosphere → HumanHealthForest.area_km2 decliningZoonotic disease spillover risk (deforestation brings wildlife/human interfaces closer)Biosphere → HumanHealthCoralReef.coralCoverPercentage decliningFood insecurity for ~1 billion coastal people dependent on reef fisheriesBiosphere → Hydrosphere → HumanHealth
+Soul for Life relevance: Environmental determinants of health is an active funding priority in Australian health research (NHMRC, MRFF). A DTDL-backed model connecting sphere telemetry to health outcomes would be a strong foundation for a grant submission under the Health Promotion Charity pathway.
+
+5.2 Preventative health and nature-based interventions
+What it does: Maps Forest, Wetland, and Grassland twins within a defined geographic radius to population health data, exploring the evidence base for nature-based health interventions (green prescribing, blue space therapy, forest bathing).
+Research basis: Growing evidence links proximity to natural ecosystems to reduced stress, improved mental health outcomes, and lower all-cause mortality (White et al. 2019, Bratman et al. 2019).
+Soul for Life angle: Models the health value of ecosystem restoration not just as carbon accounting but as preventative health infrastructure — a reframe that could differentiate Soul for Life's grant applications.
+
+5.3 Zoonotic disease risk modelling
+What it does: Queries Species twins with high zoonotic spillover risk (bats, rodents, primates) for proximity to declining Forest twins and growing HumanHealth population density. Implements the landscape epidemiology model linking deforestation to emerging infectious disease.
+Interfaces used: Species, Forest, Catchment, HumanHealth
+Research basis: Jones et al. (2008) showed 60% of emerging infectious diseases are zoonotic and linked to land use change. Subsequent COVID-19 pandemic has driven significant research funding into this area.
+Data sources: GBIF occurrence data for high-risk taxa, WHO disease outbreak alerts
+
+6. Integration and extension
+6.1 Azure Sustainability Manager integration
+What it does: Connects the Earth Ontology twin graph to Microsoft's Sustainability Manager, mapping Atmosphere.co2ConcentrationPpm telemetry against the carbon footprint of the Azure infrastructure running the ADT instance itself.
+Conceptual value: The infrastructure running your digital twin affects the model it's running — a reflexive loop that makes the sustainability cost of cloud computing visceral and measurable.
+Azure services: Azure Sustainability Calculator, Microsoft Cloud for Sustainability, Emissions Impact Dashboard
+
+6.2 Azure Maps geo-location layer
+What it does: Assigns geographic coordinates to each instantiated twin using Azure Maps, enabling spatial queries — e.g. find all CoralReef twins within 500km of a rising sea surface temperature anomaly, or all Population twins whose range overlaps a declining Forest twin.
+Interfaces used: All subclass interfaces with a name and area_km2 property
+ADT capability: Azure Maps integration via ADT's Azure Digital Twins Explorer geospatial preview
+Extension: Overlay twin status badges on a 3D globe using Azure Maps 3D terrain rendering
+
+6.3 OWL/RDF publication and Linked Data
+What it does: Converts the DTDL model back to OWL/RDF using the Azure OWL2DTDL tool in reverse, registers the ontology on BioPortal or Linked Open Vocabularies with a stable w3id.org URI namespace, and makes it citable in academic work.
+Value: A stable URI namespace makes the ontology referenceable in journal papers, interoperable with other environmental ontologies (ENVO, OBO Foundry, GeoSPARQL), and discoverable by the broader semantic web community.
+Target registries: BioPortal, Linked Open Vocabularies, OBO Foundry
+
+6.4 Digital Twin Consortium submission
+What it does: Submits the Earth Ontology as a reference domain ontology to the Digital Twin Consortium, positioning it alongside existing approved ontologies for smart buildings (RealEstateCore), energy grids (CIM), and smart cities (NGSI-LD).
+Value: The environmental/Earth systems domain is currently unrepresented in the DTC ontology library. The Earth Ontology would be the first. This drives visibility, collaboration, and potential standards adoption.
+Submission pathway: DTC working group participation → white paper → ontology submission → reference implementation
+
+6.5 Time Series Insights historical analysis
+What it does: Routes all Telemetry fields (glacier retreat, CO₂, ocean temperature, species population trend) to Azure Time Series Insights for long-term trend analysis, anomaly detection, and historical comparison against pre-industrial baselines.
+Interfaces used: All interfaces with Telemetry fields
+ADT capability: ADT → Event Hub → Time Series Insights pipeline
+Analysis value: Detect acceleration in rate-of-change across sphere telemetry — the second derivative of CO₂ rise, glacier melt, or species loss is often more alarming than the absolute value
+
+Summary matrix
+Use caseSphereComplexityTimelineImpactCO₂ dashboardAtmosphereLowDaysHighCoral bleaching alertBiosphere/HydroMediumWeeksHighGlacier retreat monitorHydrosphereLowDaysHighSDG indicator frameworkAllHighMonthsVery highSpecies population watchlistBiosphereMediumWeeksHighEarth Systems SimulatorAllDoneNowMediumTipping point early warningAllHighMonthsVery highSoul for Life health dashboardAll + HealthHighMonthsHighADT Explorer teaching envAllLowDaysMediumDTC ontology submission—MediumMonthsHigh
+
+Sources
+
+IPCC (2022). Sixth Assessment Report. https://www.ipcc.ch/assessment-report/ar6/
+Lenton, T.M. et al. (2019). Climate tipping points — too risky to bet against. Nature, 575, 592–595. https://doi.org/10.1038/d41586-019-03595-0
+Jones, K.E. et al. (2008). Global trends in emerging infectious diseases. Nature, 451, 990–993. https://doi.org/10.1038/nature06536
+White, M.P. et al. (2019). Spending at least 120 minutes a week in nature is associated with good health and wellbeing. Scientific Reports, 9, 7730. https://doi.org/10.1038/s41598-019-44097-3
+Bratman, G.N. et al. (2019). Nature and mental health: An ecosystem service perspective. Science Advances, 5(7). https://doi.org/10.1126/sciadv.aax0903
+Ripple, W.J. & Beschta, R.L. (2012). Trophic cascades in Yellowstone. Biological Conservation, 145(1), 205–213. https://doi.org/10.1016/j.biocon.2011.11.005
+Microsoft (2024). Azure Digital Twins documentation. https://docs.microsoft.com/en-us/azure/digital-twins/
+Digital Twin Consortium. https://www.digitaltwinconsortium.org/
